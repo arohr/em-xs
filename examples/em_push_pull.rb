@@ -1,4 +1,4 @@
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH << File.join(File.dirname(__FILE__), '..')
 require 'em-xs'
 
 #endpoint = "ipc://test-push-pull-#{rand(1000)}.ipc"

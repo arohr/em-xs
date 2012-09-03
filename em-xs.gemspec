@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/em-xs', __FILE__)
+require File.expand_path('../em-xs', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name        = 'em-xs'
@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.required_rubygems_version = '>= 1.3.6'
 
   gem.files        = `git ls-files`.split($\)
-  gem.require_path = 'lib'
+  #gem.require_path = '.'
 
   gem.add_dependency "ffi-rxs"
   gem.add_dependency "eventmachine", "~> 1.0.0.beta.4"

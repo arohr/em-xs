@@ -1,6 +1,5 @@
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH << File.join(File.dirname(__FILE__), '..')
 require 'em-xs'
-require 'awesome_print'
 
 endpoint = "ipc://test-push-pull-#{rand(1000)}.ipc"
 
