@@ -1,7 +1,5 @@
 require "rspec"
-
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..')
-require 'em-xs'
+require_relative '../lib/em-xs'
 
 
 describe EM::XS::Socket do

@@ -1,4 +1,4 @@
-require File.expand_path('../lib/em-xs')
+require_relative '../lib/em-xs'
 
 endpoint = "ipc://test-push-pull-#{rand(1000)}.ipc"
 

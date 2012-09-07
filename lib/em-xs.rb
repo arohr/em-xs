@@ -1,7 +1,6 @@
 require 'ffi-rxs'
 require 'ffi-rxs/version'
-#require 'eventmachine'
-require 'eventmachine-le'
+require 'eventmachine'
 
 require_relative 'em-xs/version'
 require_relative 'em-xs/connection'
