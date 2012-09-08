@@ -49,7 +49,9 @@ For more examples see `examples` directory.
 
 To create sockets the factory `EM::XS::Socket.create` must be used:
 
-    EM::XS::Socket.create(type, bind_or_connect, endpoint, context = nil, sockopts = {}, &block)
+```ruby
+EM::XS::Socket.create(type, bind_or_connect, endpoint, context = nil, sockopts = {}, &block)
+```
 
 It takes arguments for the socket type, the bind or connect operation and a endpoint. If no context is given,
 a singleton context object is created automatically (`Context.instance.xs_context`) for you, but you can also pass
