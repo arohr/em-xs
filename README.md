@@ -6,38 +6,40 @@ It provides a simple API which is more "ruby like" than the plain ffi-rxs bindin
 
 # Usage
 
-    require 'em-xs'
+```ruby
+require 'em-xs'
 
-    # Define the endpoint for the two sockets
-    endpoint = 'ipc://push-pull-test.ipc'
+# Define the endpoint for the two sockets
+endpoint = 'ipc://push-pull-test.ipc'
 
-    # Create a PULL socket and bind it
-    pull = EM::XS::Socket.create :pull, :bind, endpoint
+# Create a PULL socket and bind it
+pull = EM::XS::Socket.create :pull, :bind, endpoint
 
-    # Create a PUSH socket and connect it
-    push = EM::XS::Socket.create :push, :connect, endpoint
+# Create a PUSH socket and connect it
+push = EM::XS::Socket.create :push, :connect, endpoint
 
-    # Setup INT handler to teardown the application properly
-    run = true
-    trap 'INT' do
-      run = false
-    end
+# Setup INT handler to teardown the application properly
+run = true
+trap 'INT' do
+  run = false
+end
 
-    # The "mainloop": send and receive messages
-    while run
-      # Send a message via the PUSH socket
-      push.send_msg 'Hello World'
+# The "mainloop": send and receive messages
+while run
+  # Send a message via the PUSH socket
+  push.send_msg 'Hello World'
 
-      # Revceive a message an handle it in the code block
-      pull.recv_msg { |msg| puts msg.inspect }
+  # Revceive a message an handle it in the code block
+  pull.recv_msg { |msg| puts msg.inspect }
 
-      # Wait a little
-      sleep 0.1
-    end
+  # Wait a little
+  sleep 0.1
+end
 
-    # Close sockets properly
-    pull.close
-    push.close
+# Close sockets properly
+pull.close
+push.close
+```
 
 
 For more examples see `examples` directory.
@@ -55,13 +57,15 @@ a own context instance if you need to.
 
 The socket factory also takes a hash and/or a block configure the socket (calls setsockopt internally):
 
-    # Create e PUB socket, set SNDHWM to 100 and bind it
-    pub = EM::XS::Socket.create :pub, :bind, endpoint, nil, {:sndhwm => 100}
+```ruby
+# Create e PUB socket, set SNDHWM to 100 and bind it
+pub = EM::XS::Socket.create :pub, :bind, endpoint, nil, {:sndhwm => 100}
 
-    # Create s SUB socket, setup a subscription 'my_topic' and connect it
-    sub = EM::XS::Socket.create :sub, :connect, endpoint do |sock|
-      sock.subscribe 'my_topic'
-    end
+# Create s SUB socket, setup a subscription 'my_topic' and connect it
+sub = EM::XS::Socket.create :sub, :connect, endpoint do |sock|
+  sock.subscribe 'my_topic'
+end
+```
 
 
 ## Usage in combination with `EventMachine`
@@ -69,38 +73,39 @@ The socket factory also takes a hash and/or a block configure the socket (calls 
 Via `Socket#em_watch` a socket can be registered to a `EventMachine` event loop. EM then takes
 care of the event handling and calls #on_recv(msg) on the configured handler object.
 
-    require 'em-xs'
+```ruby
+require 'em-xs'
 
-    # Create the sockets
-    endpoint = 'inproc://test-push-pull'
-    pull = EM::XS::Socket.create :pull, :bind, endpoint
-    push = EM::XS::Socket.create :push, :connect, endpoint
+# Create the sockets
+endpoint = 'inproc://test-push-pull'
+pull = EM::XS::Socket.create :pull, :bind, endpoint
+push = EM::XS::Socket.create :push, :connect, endpoint
 
-    # A handler class which must implement #on_recv.
-    class Handler
-      def on_recv(msg)
-        puts msg.inspect
-      end
-    end
+# A handler class which must implement #on_recv.
+class Handler
+  def on_recv(msg)
+    puts msg.inspect
+  end
+end
 
-    # Setup INT handler to teardown the application properly
-    trap 'INT' do
-      EM.stop if EM.reactor_running?
-    end
+# Setup INT handler to teardown the application properly
+trap 'INT' do
+  EM.stop if EM.reactor_running?
+end
 
-    # Run the EM event loop
-    EM.run do
-      # Register the PULL socket for incoming message events
-      pull.em_watch Handler.new
+# Run the EM event loop
+EM.run do
+  # Register the PULL socket for incoming message events
+  pull.em_watch Handler.new
 
-      # Periodically send some message via the PUSH socket
-      EM.add_periodic_timer(0.1) { push.send_msg('Hello World') }
-    end
+  # Periodically send some message via the PUSH socket
+  EM.add_periodic_timer(0.1) { push.send_msg('Hello World') }
+end
 
-    # Close sockets properly
-    pull.close
-    push.close
-
+# Close sockets properly
+pull.close
+push.close
+```
 
 # Prerequisites
 
