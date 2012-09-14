@@ -9,6 +9,7 @@ module EM::XS
     def initialize(sock)
       @sock = sock
       self.notify_readable = true
+      notify_readable
     end
 
 
