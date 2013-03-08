@@ -30,9 +30,6 @@ req = EM::XS::Socket.create :req, :connect, endpoint, nil, :identity => 'client'
 
 loop do
   req.send_msg "hello world"
-  #req.sock.recv_string str = ''
-  #puts str.inspect
-  #sleep 1
   puts "response: #{req.recv_msg_blocking.inspect}"
 
   sleep 1

@@ -215,8 +215,6 @@ module EM::XS
     def recv_msg_blocking
       assert_rc @sock.recv_strings(strings = [])
       strings
-      #assert_rc @sock.recv_string(string = '')
-      #string
     end
 
 
