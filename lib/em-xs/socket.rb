@@ -5,17 +5,20 @@ module EM::XS
   # Thin wrapper around XS socket.
   # Aims for providing a simpler API to use XS sockets with (or even without) EventMachine.
   # To attach the socket to a EM eventloop, simply use Socket#em_watch.
+  #
   class Socket
 
     # Global singleton context object for creating XS sockets.
     # This object is threadsafe and should be used to create XS sockets.
     # In order to use inproc transport, all threads MUST use this singleton object to create XS sockets.
+    #
     class Context
       include Singleton
       attr_reader :xs_context
 
       def initialize
         @xs_context = ::XS::Context.create
+        #puts "Created context #{@xs_context}\n"
       end
 
       def terminate
@@ -29,7 +32,7 @@ module EM::XS
 
     # Create getters/setters for various socket options.
     #
-    %w(sndhwm rcvhwm identity).each do |name|
+    %w(sndhwm rcvhwm identity linger).each do |name|
       define_method(name) do
         self.getsockopt name
       end
@@ -206,6 +209,14 @@ module EM::XS
           @handler.on_recv strings
         end
       end
+    end
+
+
+    def recv_msg_blocking
+      assert_rc @sock.recv_strings(strings = [])
+      strings
+      #assert_rc @sock.recv_string(string = '')
+      #string
     end
 
 
